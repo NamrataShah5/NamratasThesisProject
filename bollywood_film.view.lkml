@@ -17,6 +17,17 @@ view: bollywood_film {
     # ;;
    #}
 }
+measure: percent_above_six {
+    sql: ${countAboveSix}/${film_count} ;;
+    value_format: "0.00\%"
+}
+measure: countAboveSix {
+    type: count
+    filters: {
+      field: rating
+      value: ">=6"
+    }
+}
   measure: count {
     type: count
     drill_fields: [detail*]
@@ -34,7 +45,7 @@ view: bollywood_film {
           then null
           else cast(${TABLE}.rating as INT64)
           end;;
-          drill_fields: [genre,title]
+          drill_fields: [genre,title,actor]
   }
   dimension: ratingAndGenre {
     type: number
@@ -83,9 +94,6 @@ view: bollywood_film {
     else RTRIM(${TABLE}.actor," ")
     end;;
   }
-
-
-
   dimension: release_date {
     type: string
     sql: ${TABLE}.releaseDate ;;
@@ -137,8 +145,8 @@ view: bollywood_film {
     ;;
   }
   measure: numberAction {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters:  {
       field: genre
       value: "%Action%"
@@ -147,8 +155,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberRomance {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Romance%"
@@ -157,8 +165,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberDramas {
-    type:count_distinct
-    sql: ${genre} ;;
+    type:count
+
     filters: {
       field: genre
       value: "%Drama%"
@@ -167,8 +175,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberComedies {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Comedy%"
@@ -177,8 +185,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberCrimes {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Crime%"
@@ -187,8 +195,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberAnimation {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Animation%"
@@ -197,8 +205,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberThriller {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Thriller%"
@@ -207,8 +215,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberMystery {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Mystery%"
@@ -217,8 +225,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberFantasy {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Fantasy%"
@@ -227,8 +235,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberFamily {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Family%"
@@ -237,8 +245,8 @@ view: bollywood_film {
     drill_fields: [title,rating]
   }
   measure: numberMusical {
-    type: count_distinct
-    sql: ${genre} ;;
+    type: count
+
     filters: {
       field: genre
       value: "%Musical%"
@@ -250,6 +258,7 @@ view: bollywood_film {
   measure: film_count {
     type: count_distinct
     sql: ${title} ;;
+    drill_fields: [title]
   }
   parameter: max_rank {
     type: number

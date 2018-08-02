@@ -100,6 +100,10 @@ view: hollywood_film {
     else ${TABLE}.content_rating
     end;;
     drill_fields: [genres]
+    link: {
+      label: "Drill To Films"
+      url: "https://dcl.dev.looker.com/dashboards/184?ContentRating%20Filter={{ _filters['hollywood_film.content_rating'] | url_encode }}"
+    }
   }
 
   dimension: country {
@@ -143,6 +147,7 @@ view: hollywood_film {
     sql: CASE WHEN ${TABLE}.genres="genres" then null
     else ${TABLE}.genres
     end;;
+    drill_fields: [movie_title,title_year]
   }
 
   dimension: gross {
@@ -271,8 +276,8 @@ view: hollywood_film {
     ;;
   }
   measure: numberAction {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters:  {
       field: genres
       value: "%Action%"
@@ -281,8 +286,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberRomance {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Romance%"
@@ -291,8 +296,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberDramas {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Drama%"
@@ -301,8 +306,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberComedies {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Comedy%"
@@ -312,7 +317,7 @@ view: hollywood_film {
   }
   measure: numberCrimes {
     type: count_distinct
-    sql: ${genres} ;;
+
     filters: {
       field: genres
       value: "%Crime%"
@@ -321,8 +326,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberAnimation {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Animation%"
@@ -331,8 +336,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberThriller {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Thriller%"
@@ -341,8 +346,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberMystery {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Mystery%"
@@ -351,8 +356,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberFantasy {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Fantasy%"
@@ -361,8 +366,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberFamily {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Family%"
@@ -371,8 +376,8 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberMusical {
-    type: count_distinct
-    sql: ${genres} ;;
+    type: count
+
     filters: {
       field: genres
       value: "%Musical%"
@@ -380,11 +385,26 @@ view: hollywood_film {
     label: "Musical Count"
     drill_fields: [content_rating,imdb_score]
   }
+  measure: numberHorror {
+    type: count
 
+    filters: {
+      field: genres
+      value: "%Horror%"
+    }
+    label: "Horror Count"
+    drill_fields: [content_rating,imdb_score]
+  }
  measure: movie_count {
    type: count_distinct
   sql: ${movie_title} ;;
  }
+measure: totalMovies {
+  type: number
+  sql: ${numberHorror}+${numberAction}+${numberAnimation}+${numberComedies}+${numberCrimes}+${numberDramas}
+  +${numberFamily}+${numberFantasy}+${numberHorror}+${numberMusical}+${numberMystery}+${numberRomance}
+  +${numberThriller};;
+}
   measure: minBudget {
     type: number
     sql: MIN(${budget}) ;;
@@ -397,8 +417,15 @@ view: hollywood_film {
     sql: MAX(${budget}) ;;
     label: "Max Budget"
     drill_fields: [imdb_score,duration,actor_1_name,actor_2_name,actor_3_name,gross]
+#     html: <a href="https://learn.looker.com/dashboards/184?Actor={{ value }}&Actor={{ _filters['hollywood_film.actor_1_name'] | url_encode }}";;
     value_format_name: usd
+      link: {
+        label: "Drill To Films"
+        url: "https://dcl.dev.looker.com/dashboards/184?Actor%20Filter={{ _filters['hollywood_film.actor_1_name'] | url_encode }}"
+      }
+
   }
+
   measure: totalBudget {
     type: sum_distinct
     sql: ${budget} ;;
@@ -412,6 +439,10 @@ view: hollywood_film {
     label: "Max Gross"
     value_format_name: usd
     drill_fields: [imdb_score,duration,actor_1_name,actor_2_name,actor_3_name,budget]
+    link: {
+      label: "Drill to Films"
+      url:"https://dcl.dev.looker.com/dashboards/184?Actor%20Filter={{ _filters['hollywood_film.actor_1_name'] | url_encode }}"
+    }
   }
 
 }

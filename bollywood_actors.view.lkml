@@ -45,6 +45,7 @@ view: bollywood_actors {
       then 0 else
     cast(${TABLE}.normalizedGoogleRank as FLOAT64)
     end;;
+    value_format: "0.##"
   }
 
   dimension: normalized_movie_rank {
@@ -54,6 +55,8 @@ view: bollywood_actors {
       then 0
     else cast(${TABLE}.normalizedMovieRank as FLOAT64)
     end;;
+    value_format: "0.##"
+
   }
 
   dimension: normalized_movie_rank_test {
