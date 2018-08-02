@@ -316,7 +316,7 @@ view: hollywood_film {
     drill_fields: [content_rating,imdb_score]
   }
   measure: numberCrimes {
-    type: count_distinct
+    type: count
 
     filters: {
       field: genres

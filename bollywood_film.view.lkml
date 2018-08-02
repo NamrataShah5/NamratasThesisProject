@@ -27,6 +27,7 @@ measure: countAboveSix {
       field: rating
       value: ">=6"
     }
+
 }
   measure: count {
     type: count
