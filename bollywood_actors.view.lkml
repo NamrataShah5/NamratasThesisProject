@@ -22,7 +22,6 @@ view: bollywood_actors {
     type: string
     sql: CASE WHEN ${TABLE}.actorName ="actorName" then null else RTRIM(${TABLE}.actorName," ") end ;;
   }
-
   dimension: google_hits {
     type: number
     sql: CASE WHEN
