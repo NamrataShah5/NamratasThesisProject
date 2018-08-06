@@ -47,6 +47,7 @@ measure: countAboveSix {
           else cast(${TABLE}.rating as INT64)
           end;;
           drill_fields: [genre,title,actor]
+
   }
   dimension: ratingAndGenre {
     type: number
@@ -59,8 +60,9 @@ measure: countAboveSix {
     sql: ${rating} ;;
   }
   measure: rating_measure {
-    type: sum
+    type: max
     sql: ${rating} ;;
+    drill_fields: [genre,title,actor]
   }
   dimension: genre {
     type: string

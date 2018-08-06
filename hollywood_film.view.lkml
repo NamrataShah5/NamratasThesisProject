@@ -2,7 +2,7 @@ view: hollywood_film {
   derived_table: {
     sql: select row_number() over() as unique_id,actor_1_facebook_likes,actor_1_name,actor_2_facebook_likes,actor_2_name,actor_3_facebook_likes,actor_3_name,aspect_ratio,
     budget, cast_total_facebook_likes,color,content_rating,country,director_facebook_likes,director_name,duration,facenumber_in_poster,
-    gross,imdb_score,language,movie_facebook_likes,movie_imdb_link,movie_title,num_critics_for_reviews,num_voted_users,
+    gross,imdb_score,language,movie_facebook_likes,movie_imdb_link,movie_title,num_user_for_reviews,num_critics_for_reviews,num_voted_users,
     plot_keywords,title_year,genres from bollywood_movies.hollywood_film as b cross join unnest(split(b.genres, "|")) as genres ;;
 
   }
@@ -15,6 +15,7 @@ view: hollywood_film {
     type: sum_distinct
     sql: ${imdb_score} ;;
     drill_fields: [movie_title,actor_1_name,actor_2_name,actor_3_name,num_critics_for_reviews]
+
   }
   #sql_table_name: bollywood_movies.hollywood_film ;;
   dimension: id {
@@ -165,6 +166,11 @@ view: hollywood_film {
     else cast(${TABLE}.imdb_score as FLOAT64)
     end;;
     drill_fields: [genres,plot_keywords,movie_title,content_rating]
+    link: {
+      label: "Drill To Films"
+      url:"https://dcl.dev.looker.com/dashboards/184?Movie=%25{{ hollywood_film.movie_title._rendered_value }}%25"
+
+    }
   }
 
   dimension: language {
@@ -196,11 +202,12 @@ view: hollywood_film {
     end;;
   }
 
+#
   dimension: num_critics_for_reviews {
     type: number
-    sql: CASE WHEN ${TABLE}.num_critics_for_reviews="num_critics_for_reviews" then null
-    else cast(${TABLE}.num_critics_for_reviews as INT64)
-    end;;
+    sql: CASE WHEN ${TABLE}.num_critics_for_reviews="num_critic_for_reviews" then null
+        else cast(${TABLE}.num_critics_for_reviews as INT64)
+        end;;
   }
 
   dimension: num_user_for_reviews {
