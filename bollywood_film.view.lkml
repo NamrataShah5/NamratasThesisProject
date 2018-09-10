@@ -58,6 +58,7 @@ measure: countAboveSix {
   measure: rating_average {
     type: average
     sql: ${rating} ;;
+    drill_fields: [title]
   }
   measure: rating_measure {
     type: max

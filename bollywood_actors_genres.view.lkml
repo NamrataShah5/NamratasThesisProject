@@ -2,7 +2,7 @@ view: bollywood_actors_genres {
 
 
     derived_table: {
-      persist_for: "24 hours"
+      persist_for: "9999999999999999999999999999999999999999999999999 hours"
       sql: SELECT
       actor,
     title as name,

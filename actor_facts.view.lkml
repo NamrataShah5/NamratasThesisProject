@@ -17,6 +17,9 @@ view: actor_facts {
   }
   dimension: timeSpan {
     type: number
-    sql: DATEDIFF(${first_film},${last_film});;
+    sql: DATEDIFF(${bollywood_actors.rating_sum},${last_film});;
   }
+ }
+ view: actor_facts_ext {
+   extends: [actor_facts]
  }

@@ -200,6 +200,7 @@ view: hollywood_film {
     sql: CASE WHEN ${TABLE}.movie_title="movie_title" then null
     else RTRIM(${TABLE}.movie_title," ")
     end;;
+    drill_fields: [genres]
   }
 
 #
@@ -259,6 +260,7 @@ view: hollywood_film {
   measure: rank_average {
     type: average
     sql: ${imdb_score} ;;
+    drill_fields: [film_count]
   }
   measure: count {
     type: count
@@ -267,6 +269,7 @@ view: hollywood_film {
   measure: film_count {
     type: count_distinct
     sql: ${movie_title} ;;
+    drill_fields: [actor_1_name]
   }
   parameter: genre_to_count {
     type: unquoted
@@ -281,6 +284,7 @@ view: hollywood_film {
     ELSE 0
     END
     ;;
+
   }
   measure: numberAction {
     type: count
